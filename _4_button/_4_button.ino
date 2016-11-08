@@ -17,6 +17,8 @@ Bounce pushbutton4 = Bounce(button4, 50);
 
 byte RES;
 
+typedef void (usb_keyboard_class::* keyFunctionCall)(uint8_t arg);
+
 void setup() {
   Check_EEPROM();
   pinMode(button1, INPUT_PULLUP);  //Power Up
@@ -63,7 +65,7 @@ void loop() {
     Keyboard.print("mSelect Aero Bike");
     delay(1500);
     ESC();
-    Set_Aero_Bike();
+    //Set_Aero_Bike();
     STARTUP = 1;
     Yp = Yp/Conv; //value to shift mouse up or down (GLOBAL) //
     Yr = Yr/Conv; //default coordinates
@@ -295,11 +297,7 @@ void ET() //Exit and Toggle
 
 void Discord()
 {
-  Keyboard.set_key1(KEYPAD_ASTERIX);
-  Keyboard.send_now();
-  Keyboard.set_key1(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key1, KEYPAD_ASTERIX);
   BLINK();
 }
 
@@ -380,85 +378,57 @@ void Chat()
 
 void ENTER()
 {
-  Keyboard.set_key1(KEY_ENTER);
-  Keyboard.send_now();
-  Keyboard.set_key1(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key1, KEY_ENTER);
 }
 
 void ESC()
 {
-  Keyboard.set_key2(KEY_ESC);
-  Keyboard.send_now();
-  Keyboard.set_key2(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key2, KEY_ESC);
 }
 
 void F10()
 {
-  Keyboard.set_key3(KEY_F10);
-  Keyboard.send_now();
-  Keyboard.set_key3(0);
-  Keyboard.send_now();
-  delay(10);
-
+  handleKeyboard(&usb_keyboard_class::set_key3, KEY_F10);
 }
 
 void del()
 {
-  Keyboard.set_key4(KEY_BACKSPACE);
-  Keyboard.send_now();
-  Keyboard.set_key4(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key4, KEY_BACKSPACE);
 }
 
 void Down()
 {
-  Keyboard.set_key5(KEY_DOWN);
-  Keyboard.send_now();
-  Keyboard.set_key5(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key5, KEY_DOWN);
 }
 
 void Up()
 {
-  Keyboard.set_key5(KEY_UP);
-  Keyboard.send_now();
-  Keyboard.set_key5(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key5, KEY_UP);
 }
 
 void Right()
 {
-  Keyboard.set_key5(KEY_RIGHT);
-  Keyboard.send_now();
-  Keyboard.set_key5(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key5, KEY_RIGHT);
 }
 
 void Left()
 {
-  Keyboard.set_key5(KEY_LEFT);
-  Keyboard.send_now();
-  Keyboard.set_key5(0);
-  Keyboard.send_now();
-  delay(10);
+  handleKeyboard(&usb_keyboard_class::set_key5, KEY_LEFT);
 }
 
 void PU()
 {
-  Keyboard.set_key5(KEY_SPACE);
+  handleKeyboard(&usb_keyboard_class::set_key5, KEY_SPACE);
+  BLINK();
+}
+
+void handleKeyboard(keyFunctionCall setKey, int keyVal)
+{
+  (Keyboard.*setKey)(keyVal);
   Keyboard.send_now();
-  Keyboard.set_key5(0);
+  (Keyboard.*setKey)(0);
   Keyboard.send_now();
   delay(10);
-  BLINK();
 }
 
 void PushUpdate()
@@ -730,8 +700,8 @@ void Z_Carbon()
   Keyboard.print("mZwift Carbon Selected");
 }
 
-Set_Aero_Bike()
-{
+//Set_Aero_Bike()
+//{
   //stuff here
-}
+//}
 
