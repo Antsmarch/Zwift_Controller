@@ -556,6 +556,17 @@ int TIME = 0;
 int T_offset;
 int E_Choice;
 
+void selectMonitor(int mouseScreenWidth, int mouseScreenHeight, int conv, int resChoice, int resDefault, const char* message)
+{
+  Conv = conv;
+  Mouse.screenSize(mouseScreenHeight, mouseScreenHeight);
+  ResChoice = resChoice;
+  Keyboard.print(message);
+  delay(1000);
+  ESC();
+  Res_Default = resDefault;
+}
+
 void Set_Monitor_Res()
 {
   T_offset = millis();
@@ -564,45 +575,19 @@ void Set_Monitor_Res()
     PushUpdate();
     if (pushbutton1.fallingEdge())
     {
-      Conv = 10;
-      Mouse.screenSize(1920, 1080);
-      ResChoice = 0;
-      Keyboard.print("m1080p Selected");
-      delay(1000);
-      ESC();
-      Res_Default = 1;
+      selectMonitor(1920, 1080, 10, 0, 1, "m1080p Selected");
     }
     if (pushbutton2.fallingEdge())
     {
-      Conv = 12;
-      Mouse.screenSize(1600, 900);
-      ResChoice = 1;
-      Keyboard.print("m1600x900 Selected");
-      delay(1000);
-      ESC();
-      Res_Default = 1;
+      selectMonitor(1600, 900, 12, 1, 1, "m1600x900 Selected");
     }
     if (pushbutton3.fallingEdge())
     {
-      Conv = 10;
-      Mouse.screenSize(1280, 720);
-      Keyboard.print("m720p Selected");
-      delay(1000);
-      ESC();
-      //some other resolution like 4K
-      ResChoice = 2;
-      Res_Default = 1;
+      selectMonitor(1280, 720, 10, 2, 1, "m720p Selected");
     }
     if (pushbutton4.fallingEdge())
     {
-      Conv = 10;
-      Mouse.screenSize(3840, 2060);
-      Keyboard.print("m4k Selected");
-      delay(1000);
-      ESC();
-      //some other resolotion like 720p
-      ResChoice = 3;
-      Res_Default = 1;
+      selectMonitor(3840, 2060, 10, 3, 1, "m4k Selected");
     }
     TIME = millis() - T_offset; //subtract current time by time stamp entering function
   }//end while statement
